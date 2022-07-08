@@ -1,5 +1,7 @@
 use std::fmt::Debug;
 
+use num_integer::Integer;
+
 #[derive(Clone, Debug)]
 pub struct Frame {
     pub width: u32,
@@ -15,16 +17,7 @@ pub enum Cell {
 
 impl Frame {
     pub fn new(width: u32, height: u32) -> Self {
-        let cells = (0..width * height)
-            .map(|_| {
-                /*if rng.gen::<u8>() % 2 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }*/
-                Cell::Dead
-            })
-            .collect();
+        let cells = (0..width * height).map(|_| Cell::Dead).collect();
 
         Frame {
             width,
@@ -37,8 +30,7 @@ impl Frame {
         let mut new_frame = self.clone();
         let mut diff = Vec::new();
         for (index, cell) in self.cells.iter().enumerate() {
-            let x = index as u32 % self.width;
-            let y = index as u32 / self.width;
+            let (y, x) = (index as u32).div_rem(&self.width);
             match (self.count_neighbours(x, y), cell) {
                 (n, Cell::Alive) if n != 2 && n != 3 => {
                     new_frame.set_cell(x, y, Cell::Dead);
@@ -58,16 +50,14 @@ impl Frame {
 
     fn count_neighbours(&self, x: u32, y: u32) -> u8 {
         let mut neighbours = 0;
-        for i in -1..=1 {
-            for j in -1..=1 {
+        for i in [self.width - 1, 0, 1] {
+            for j in [self.height - 1, 0, 1] {
                 if i == 0 && j == 0 {
                     continue;
                 }
-
-                neighbours += self.get_cell(
-                    ((x as i32 + i) % self.width as i32) as u32,
-                    ((y as i32 + j) % self.height as i32) as u32,
-                ) as u8;
+                let x = (x + i) % self.width;
+                let y = (y + j) % self.height;
+                neighbours += self.get_cell(x as u32, y as u32) as u8;
             }
         }
 
@@ -76,14 +66,12 @@ impl Frame {
 
     pub fn get_cell(&self, x: u32, y: u32) -> Cell {
         self.cells
-            .get((y % self.height * self.width + x % self.width) as usize)
+            .get((y * self.width + x) as usize)
             .unwrap()
             .clone()
     }
     fn get_cell_mut(&mut self, x: u32, y: u32) -> &mut Cell {
-        self.cells
-            .get_mut((y % self.height * self.width + x % self.width) as usize)
-            .unwrap()
+        self.cells.get_mut((y * self.width + x) as usize).unwrap()
     }
 
     /// sets a cell and returns if the cell has changed

@@ -147,9 +147,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     app.clear(true);
 
     let game = game::Frame::new(42, 42);
-
     let game_handle = Arc::new(RwLock::new(game));
-
     let game_thread = {
         let game_handle = game_handle.clone();
         let appref = app.upgrade_ref();
@@ -180,6 +178,78 @@ fn main() -> Result<(), Box<dyn Error>> {
                 scale: 50.,
                 foreground: color::BLACK,
                 border_px: 5,
+            },
+            ..Default::default()
+        },
+    );
+    app.add_element(
+        "gameSpeedPlusPlus",
+        libremarkable::ui_extensions::element::UIElementWrapper {
+            position: Point2 { x: 300, y: 50 },
+            refresh: UIConstraintRefresh::Refresh,
+            onclick: Some(|_, _| {
+                let speed = GAME_SPEED.load(Ordering::Relaxed);
+                GAME_SPEED.store(speed + 50, Ordering::Relaxed)
+            }),
+            inner: UIElement::Text {
+                text: "++".to_owned(),
+                scale: 50.,
+                foreground: color::BLACK,
+                border_px: 0,
+            },
+            ..Default::default()
+        },
+    );
+    app.add_element(
+        "gameSpeedPlus",
+        libremarkable::ui_extensions::element::UIElementWrapper {
+            position: Point2 { x: 400, y: 50 },
+            refresh: UIConstraintRefresh::Refresh,
+            onclick: Some(|_, _| {
+                let speed = GAME_SPEED.load(Ordering::Relaxed);
+                GAME_SPEED.store(speed + 10, Ordering::Relaxed)
+            }),
+            inner: UIElement::Text {
+                text: "+".to_owned(),
+                scale: 50.,
+                foreground: color::BLACK,
+                border_px: 0,
+            },
+            ..Default::default()
+        },
+    );
+    app.add_element(
+        "gameSpeedMinus",
+        libremarkable::ui_extensions::element::UIElementWrapper {
+            position: Point2 { x: 450, y: 50 },
+            refresh: UIConstraintRefresh::Refresh,
+            onclick: Some(|_, _| {
+                let speed = GAME_SPEED.load(Ordering::Relaxed);
+                GAME_SPEED.store(speed - 10, Ordering::Relaxed)
+            }),
+            inner: UIElement::Text {
+                text: "-".to_owned(),
+                scale: 50.,
+                foreground: color::BLACK,
+                border_px: 0,
+            },
+            ..Default::default()
+        },
+    );
+    app.add_element(
+        "gameSpeedMinusMinus",
+        libremarkable::ui_extensions::element::UIElementWrapper {
+            position: Point2 { x: 500, y: 50 },
+            refresh: UIConstraintRefresh::Refresh,
+            onclick: Some(|_, _| {
+                let speed = GAME_SPEED.load(Ordering::Relaxed);
+                GAME_SPEED.store(speed - 50, Ordering::Relaxed)
+            }),
+            inner: UIElement::Text {
+                text: "--".to_owned(),
+                scale: 50.,
+                foreground: color::BLACK,
+                border_px: 0,
             },
             ..Default::default()
         },
