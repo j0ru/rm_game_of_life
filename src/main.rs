@@ -4,10 +4,8 @@ use libremarkable::cgmath::{Point2, Vector2};
 use libremarkable::framebuffer::common::{
     color, display_temp, dither_mode, mxcfb_rect, waveform_mode, DRAWING_QUANT_BIT,
 };
-use libremarkable::framebuffer::refresh::PartialRefreshMode;
-use libremarkable::framebuffer::{FramebufferDraw, FramebufferRefresh};
-use libremarkable::input::wacom::WacomPen;
-use libremarkable::input::{wacom::WacomEvent, InputEvent};
+use libremarkable::framebuffer::{FramebufferDraw, FramebufferRefresh, PartialRefreshMode};
+use libremarkable::input::{InputEvent, WacomEvent, WacomPen};
 use libremarkable::ui_extensions::element::{UIConstraintRefresh, UIElement};
 use log::*;
 use once_cell::sync::Lazy;

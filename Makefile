@@ -1,8 +1,10 @@
 TARGET_DIR=~/apps
 
+SHELL := /bin/bash
+
 .PHONY: release
 release:
-	cargo build --release --target=armv7-unknown-linux-gnueabihf
+	source /opt/codex/rm11x/3.1.2/environment-setup-cortexa7hf-neon-remarkable-linux-gnueabi && cargo build --release --target=armv7-unknown-linux-gnueabihf
 
 
 .PHONY: deploy
