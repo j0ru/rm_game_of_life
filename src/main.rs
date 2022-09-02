@@ -186,14 +186,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             position: Point2 { x: 300, y: 50 },
             refresh: UIConstraintRefresh::Refresh,
             onclick: Some(|_, _| {
-                let speed = GAME_SPEED.load(Ordering::Relaxed);
-                GAME_SPEED.store(speed + 50, Ordering::Relaxed)
+                GAME_SPEED.fetch_add(50, Ordering::Relaxed);
             }),
             inner: UIElement::Text {
-                text: "++".to_owned(),
+                text: "<<".to_owned(),
                 scale: 50.,
                 foreground: color::BLACK,
-                border_px: 0,
+                border_px: 2,
             },
             ..Default::default()
         },
@@ -204,14 +203,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             position: Point2 { x: 400, y: 50 },
             refresh: UIConstraintRefresh::Refresh,
             onclick: Some(|_, _| {
-                let speed = GAME_SPEED.load(Ordering::Relaxed);
-                GAME_SPEED.store(speed + 10, Ordering::Relaxed)
+                GAME_SPEED.fetch_add(10, Ordering::Relaxed);
             }),
             inner: UIElement::Text {
-                text: "+".to_owned(),
+                text: "<".to_owned(),
                 scale: 50.,
                 foreground: color::BLACK,
-                border_px: 0,
+                border_px: 2,
             },
             ..Default::default()
         },
@@ -222,14 +220,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             position: Point2 { x: 450, y: 50 },
             refresh: UIConstraintRefresh::Refresh,
             onclick: Some(|_, _| {
-                let speed = GAME_SPEED.load(Ordering::Relaxed);
-                GAME_SPEED.store(speed - 10, Ordering::Relaxed)
+                GAME_SPEED.fetch_sub(10, Ordering::Relaxed);
             }),
             inner: UIElement::Text {
-                text: "-".to_owned(),
+                text: ">".to_owned(),
                 scale: 50.,
                 foreground: color::BLACK,
-                border_px: 0,
+                border_px: 2,
             },
             ..Default::default()
         },
@@ -240,14 +237,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             position: Point2 { x: 500, y: 50 },
             refresh: UIConstraintRefresh::Refresh,
             onclick: Some(|_, _| {
-                let speed = GAME_SPEED.load(Ordering::Relaxed);
-                GAME_SPEED.store(speed - 50, Ordering::Relaxed)
+                GAME_SPEED.fetch_sub(50, Ordering::Relaxed);
             }),
             inner: UIElement::Text {
-                text: "--".to_owned(),
+                text: ">>".to_owned(),
                 scale: 50.,
                 foreground: color::BLACK,
-                border_px: 0,
+                border_px: 2,
             },
             ..Default::default()
         },

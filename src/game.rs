@@ -70,16 +70,19 @@ impl Frame {
             .unwrap()
             .clone()
     }
-    fn get_cell_mut(&mut self, x: u32, y: u32) -> &mut Cell {
-        self.cells.get_mut((y * self.width + x) as usize).unwrap()
+    fn get_cell_mut(&mut self, x: u32, y: u32) -> Option<&mut Cell> {
+        self.cells.get_mut((y * self.width + x) as usize)
     }
 
     /// sets a cell and returns if the cell has changed
     pub fn set_cell(&mut self, x: u32, y: u32, cell: Cell) -> bool {
-        let old_cell = self.get_cell_mut(x, y);
-        if *old_cell != cell {
-            *old_cell = cell;
-            true
+        if let Some(old_cell) = self.get_cell_mut(x, y) {
+            if *old_cell != cell {
+                *old_cell = cell;
+                true
+            } else {
+                false
+            }
         } else {
             false
         }
